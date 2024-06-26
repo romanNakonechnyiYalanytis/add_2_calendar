@@ -46,6 +46,7 @@ class Event {
       params['url'] = iosParams.url;
     } else {
       params['invites'] = androidParams.emailInvites?.join(",");
+      params['reminder'] = androidParams.reminder;
     }
 
     return params;
@@ -54,8 +55,8 @@ class Event {
 
 class AndroidParams {
   final List<String>? emailInvites;
-
-  const AndroidParams({this.emailInvites});
+  final int? reminder;
+  const AndroidParams({this.emailInvites, this.reminder});
 }
 
 class IOSParams {

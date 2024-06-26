@@ -45,7 +45,8 @@ class Add2CalendarPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
               call.argument("timeZone") as String?,
               call.argument("allDay")!!,
               call.argument("recurrence") as HashMap<String, Any>?,
-              call.argument("invites") as String?
+              call.argument("invites") as String?,
+              call.argument("reminder") as Int?
           )
           result.success(success)
 
@@ -83,7 +84,8 @@ class Add2CalendarPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
         timeZone: String?,
         allDay: Boolean,
         recurrence: HashMap<String, Any>?,
-        invites: String?
+        invites: String?,
+        reminderMinutes: Int?
     ): Boolean {
 
         val mContext: Context = if (activity != null) activity!!.applicationContext else context!!
@@ -109,6 +111,11 @@ class Add2CalendarPlugin: FlutterPlugin, MethodCallHandler, ActivityAware {
 
         if (recurrence != null) {
             intent.putExtra(CalendarContract.Events.RRULE, buildRRule(recurrence))
+        }
+
+        if(reminderMinutes != null){
+            intent.putExtra(CalendarContract.Reminders.MINUTES, reminderMinutes)
+            intent.putExtra(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT)
         }
 
         if (invites != null) {
